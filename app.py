@@ -9,7 +9,7 @@ st.set_page_config(
     layout="centered"
 )
 
-# Estilos CSS personalizados para mejorar el aspecto dinámico
+# Estilos CSS personalizados
 st.markdown("""
     <style>
     .stButton>button {
@@ -18,27 +18,21 @@ st.markdown("""
         height: 3em;
         font-weight: bold;
     }
-    .metric-box {
-        background-color: #f0f2f6;
-        padding: 10px;
-        border-radius: 10px;
-        text-align: center;
-    }
     </style>
 """, unsafe_allow_html=True)
 
-# Inicializar variables de estado de sesión
-if 'secret_number' not in st_session_state:
+# Inicializar variables de estado de sesión (corregido: st.session_state)
+if 'secret_number' not in st.session_state:
     st.session_state.secret_number = random.randint(1, 100)
-if 'attempts' not in st_session_state:
+if 'attempts' not in st.session_state:
     st.session_state.attempts = 0
-if 'max_attempts' not in st_session_state:
+if 'max_attempts' not in st.session_state:
     st.session_state.max_attempts = 7
-if 'game_over' not in st_session_state:
+if 'game_over' not in st.session_state:
     st.session_state.game_over = False
-if 'score' not in st_session_state:
+if 'score' not in st.session_state:
     st.session_state.score = 0
-if 'start_time' not in st_session_state:
+if 'start_time' not in st.session_state:
     st.session_state.start_time = time.time()
 
 def reset_game():
@@ -51,7 +45,7 @@ def reset_game():
 st.title("🎮 El Desafío del Número Secreto")
 st.caption("¡Demuestra tu intuición y velocidad mental!")
 
-# Menú lateral para ajustes
+# Menú lateral
 with st.sidebar:
     st.header("⚙️ Configuración")
     dificultad = st.selectbox("Selecciona la Dificultad:", ["Fácil (1-50, 10 intentos)", "Normal (1-100, 7 intentos)", "Difícil (1-200, 5 intentos)"])
@@ -74,7 +68,7 @@ with st.sidebar:
     st.markdown("---")
     st.metric(label="🏆 Puntuación Acumulada", value=st.session_state.score)
 
-# Panel de Estado del Juego
+# Panel de Estado
 col1, col2, col3 = st.columns(3)
 intentos_restantes = st.session_state.max_attempts - st.session_state.attempts
 
@@ -82,11 +76,11 @@ col1.metric("Intentos Usados", f"{st.session_state.attempts}/{st.session_state.m
 col2.metric("Restantes", intentos_restantes)
 col3.metric("Rango", "1 - 50" if "Fácil" in dificultad else ("1 - 100" if "Normal" in dificultad else "1 - 200"))
 
-# Barra de progreso de intentos
+# Barra de progreso
 progreso = st.session_state.attempts / st.session_state.max_attempts
 st.progress(min(progreso, 1.0))
 
-# Mecánica del Juego
+# Lógica del Juego
 if not st.session_state.game_over:
     rango_max = 50 if "Fácil" in dificultad else (100 if "Normal" in dificultad else 200)
     guess = st.number_input("Introduce tu número:", min_value=1, max_value=rango_max, step=1, key="input_guess")
