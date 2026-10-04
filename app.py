@@ -23,7 +23,7 @@ st.markdown("""
 
 # Inicializar variables de estado de sesión (corregido: st.session_state)
 if 'secret_number' not in st.session_state:
-    st.session_state.secret_number = random.randint(1, 100)
+    st.session_state.secret_number = random.randint(1, 50)
 if 'attempts' not in st.session_state:
     st.session_state.attempts = 0
 if 'max_attempts' not in st.session_state:
@@ -36,7 +36,7 @@ if 'start_time' not in st.session_state:
     st.session_state.start_time = time.time()
 
 def reset_game():
-    st.session_state.secret_number = random.randint(1, 100)
+    st.session_state.secret_number = random.randint(1, 50)
     st.session_state.attempts = 0
     st.session_state.game_over = False
     st.session_state.start_time = time.time()
@@ -55,10 +55,10 @@ with st.sidebar:
             st.session_state.secret_number = random.randint(1, 50)
             st.session_state.max_attempts = 10
         elif "Normal" in dificultad:
-            st.session_state.secret_number = random.randint(1, 100)
+            st.session_state.secret_number = random.randint(1, 50)
             st.session_state.max_attempts = 7
         else:
-            st.session_state.secret_number = random.randint(1, 200)
+            st.session_state.secret_number = random.randint(1, 50)
             st.session_state.max_attempts = 5
         st.session_state.attempts = 0
         st.session_state.game_over = False
@@ -74,7 +74,7 @@ intentos_restantes = st.session_state.max_attempts - st.session_state.attempts
 
 col1.metric("Intentos Usados", f"{st.session_state.attempts}/{st.session_state.max_attempts}")
 col2.metric("Restantes", intentos_restantes)
-col3.metric("Rango", "1 - 50" if "Fácil" in dificultad else ("1 - 100" if "Normal" in dificultad else "1 - 200"))
+col3.metric("Rango", "1 - 50" if "Fácil" in dificultad else ("1 - 50" if "Normal" in dificultad else "1 - 50"))
 
 # Barra de progreso
 progreso = st.session_state.attempts / st.session_state.max_attempts
